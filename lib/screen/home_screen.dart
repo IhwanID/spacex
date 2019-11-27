@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:spacex/screen/dragons_screen.dart';
 import 'package:spacex/screen/launches_scree.dart';
 import 'package:spacex/screen/rockets_screen.dart';
-
+import 'package:spacex/model/core.dart' as cores;
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -13,6 +13,13 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   FirebaseMessaging _firebaseMessaging = new FirebaseMessaging();
   int _selectedIndex = 0;
+
+  Future<void> getAllCores() async {
+    cores.CoresList allCores = await cores.getAllCore();
+    for (var cores in allCores.cores) {
+      print("dataCores: ${cores.serial}");
+    }
+  }
 
   Future<dynamic> myBackgroundMessageHandler(Map<String, dynamic> message) {
     if (message.containsKey('data')) {
@@ -31,13 +38,13 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
+    getAllCores();
     _firebaseMessaging.configure(
       onMessage: (Map<String, dynamic> message) {
         print('on message $message');
       },
       onResume: (Map<String, dynamic> message) {
         print('on resume $message');
-
       },
       onLaunch: (Map<String, dynamic> message) {
         print('on launch $message');
@@ -45,7 +52,7 @@ class _HomeScreenState extends State<HomeScreen> {
     );
     _firebaseMessaging.requestNotificationPermissions(
         const IosNotificationSettings(sound: true, badge: true, alert: true));
-    _firebaseMessaging.getToken().then((token){
+    _firebaseMessaging.getToken().then((token) {
       print(token);
     });
   }
@@ -60,13 +67,11 @@ class _HomeScreenState extends State<HomeScreen> {
     if (_selectedIndex == 0) {
       return RocketsScreen();
     } else if (_selectedIndex == 1) {
-      return  DragonsScreen();
+      return DragonsScreen();
     } else {
       return LaunchesScreen();
     }
   }
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -95,6 +100,5 @@ class _HomeScreenState extends State<HomeScreen> {
         onTap: _onItemTapped,
       ),
     );
-
   }
 }
