@@ -1,9 +1,11 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:spacex/screen/dragons_screen.dart';
 import 'package:spacex/screen/launches_scree.dart';
 import 'package:spacex/screen/rockets_screen.dart';
 import 'package:spacex/model/core.dart' as cores;
+import 'package:bottom_navy_bar/bottom_navy_bar.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -42,12 +44,15 @@ class _HomeScreenState extends State<HomeScreen> {
     _firebaseMessaging.configure(
       onMessage: (Map<String, dynamic> message) {
         print('on message $message');
+        return null;
       },
       onResume: (Map<String, dynamic> message) {
         print('on resume $message');
+        return null;
       },
       onLaunch: (Map<String, dynamic> message) {
         print('on launch $message');
+        return null;
       },
     );
     _firebaseMessaging.requestNotificationPermissions(
@@ -80,24 +85,25 @@ class _HomeScreenState extends State<HomeScreen> {
         title: Text('SpaceX'),
       ),
       body: _setScreen(),
-      bottomNavigationBar: BottomNavigationBar(
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
+      bottomNavigationBar: BottomNavyBar(
+        items: [
+          BottomNavyBarItem(
+            icon: Icon(FontAwesomeIcons.rocket),
             title: Text('Rockets'),
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.business),
+          BottomNavyBarItem(
+            icon: Icon(FontAwesomeIcons.spaceShuttle),
             title: Text('Dragons'),
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.school),
+          BottomNavyBarItem(
+            icon: Icon(FontAwesomeIcons.satellite),
             title: Text('Launches'),
           ),
         ],
-        currentIndex: _selectedIndex,
-        selectedItemColor: Colors.amber[800],
-        onTap: _onItemTapped,
+        selectedIndex: _selectedIndex,
+        showElevation: true,
+        itemCornerRadius: 8,
+        onItemSelected: _onItemTapped,
       ),
     );
   }
