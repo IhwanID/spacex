@@ -6,6 +6,7 @@ import 'package:spacex/model/dragons.dart';
 import 'package:spacex/model/launches.dart';
 import 'package:spacex/screen/cores_screen.dart';
 import 'package:spacex/screen/dragons_screen.dart';
+import 'package:spacex/screen/info_screen.dart';
 import 'package:spacex/screen/launches_scree.dart';
 import 'package:spacex/screen/rockets_screen.dart';
 import 'package:bottom_navy_bar/bottom_navy_bar.dart';
@@ -168,6 +169,17 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text('SpaceX'),
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(FontAwesomeIcons.infoCircle),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => InfoScreen()),
+              );
+            },
+          ),
+        ],
       ),
       body: _setScreen(),
       bottomNavigationBar: BottomNavyBar(

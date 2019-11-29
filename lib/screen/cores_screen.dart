@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:spacex/model/capsules.dart';
 import 'package:spacex/model/core.dart';
 
 class CoreScreen extends StatefulWidget {
@@ -8,15 +9,41 @@ class CoreScreen extends StatefulWidget {
 
 class _CoreScreenState extends State<CoreScreen> {
   Future<CoresList> coresList;
+  Future<CapsulesList> capsulesList;
 
   @override
   void initState() {
     super.initState();
     coresList = getAllCore();
+    capsulesList = getAllCapsules();
   }
 
   @override
   Widget build(BuildContext context) {
+    return DefaultTabController(
+      length: 2,
+      child: Scaffold(
+        appBar: TabBar(
+          indicatorColor: Colors.blue,
+          labelColor: Colors.blue,
+          unselectedLabelColor: Colors.blueAccent,
+          tabs: [
+            Tab(
+              text: 'Capsules',
+            ),
+            Tab(
+              text: 'Cores',
+            ),
+          ],
+        ),
+        body: TabBarView(
+          children: [buildCapsulesScreen(), buildCoreScreen()],
+        ),
+      ),
+    );
+  }
+
+  buildCoreScreen() {
     return Container(
       child: FutureBuilder<CoresList>(
           future: coresList,
@@ -37,6 +64,43 @@ class _CoreScreenState extends State<CoreScreen> {
                           ),
                           trailing: Text(
                             '${data.cores[index].status}',
+                          ),
+                        ),
+                        Divider()
+                      ],
+                    );
+                  });
+            } else if (snapshot.hasError) {
+              return Text("${snapshot.error}");
+            }
+
+            // By default, show a loading spinner.
+            return Center(child: CircularProgressIndicator());
+          }),
+    );
+  }
+
+  buildCapsulesScreen() {
+    return Container(
+      child: FutureBuilder<CapsulesList>(
+          future: capsulesList,
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              CapsulesList data = snapshot.data;
+              return ListView.builder(
+                  itemCount: data.capsules.length,
+                  itemBuilder: (context, index) {
+                    return Column(
+                      children: <Widget>[
+                        ListTile(
+                          title: Text(
+                            '${data.capsules[index].serial}',
+                          ),
+                          subtitle: Text(
+                            '${data.capsules[index].details}',
+                          ),
+                          trailing: Text(
+                            '${data.capsules[index].status}',
                           ),
                         ),
                         Divider()
