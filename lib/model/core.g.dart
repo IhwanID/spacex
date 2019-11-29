@@ -20,10 +20,12 @@ Map<String, dynamic> _$CoresListToJson(CoresList instance) =>
 Cores _$CoresFromJson(Map<String, dynamic> json) {
   return Cores(
       serial: json['core_serial'] as String,
-      details: json['details'] as String);
+      details: json['details'] as String,
+      status: json['status'] as String);
 }
 
 Map<String, dynamic> _$CoresToJson(Cores instance) => <String, dynamic>{
       'core_serial': instance.serial,
-      'details': instance.details
+      'details': instance.details,
+      'status': instance.status
     };
