@@ -72,10 +72,12 @@ class _HomeScreenState extends State<HomeScreen> {
 
   _setScreen() {
     if (_selectedIndex == 0) {
-      return buildHomeScreen();
+      return RocketsScreen();
     } else if (_selectedIndex == 1) {
       return DragonsScreen();
     } else if (_selectedIndex == 2) {
+      return buildHomeScreen();
+    } else if (_selectedIndex == 3) {
       return LaunchesScreen();
     } else {
       return CoreScreen();
@@ -83,90 +85,8 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   buildHomeScreen() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        Text('Launchers'),
-        FutureBuilder<List<Launches>>(
-            future: listLaunches,
-            builder: (context, snapshot) {
-              if (snapshot.hasData) {
-                List<Launches> data = snapshot.data;
-                return Container(
-                  padding:
-                      EdgeInsets.symmetric(horizontal: 16.0, vertical: 24.0),
-                  height: MediaQuery.of(context).size.height * 0.35,
-                  child: ListView.builder(
-                      shrinkWrap: true,
-                      scrollDirection: Axis.horizontal,
-                      itemCount: 4,
-                      itemBuilder: (context, index) {
-                        return Container(
-                          margin: EdgeInsets.all(8.0),
-                          color: Colors.indigo,
-                          width: MediaQuery.of(context).size.width * 0.6,
-                          child: ListTile(
-                            leading: Image.network(
-                              '${data[index].links.missionPatch}',
-                              width: 60,
-                            ),
-                            title: Text('${data[index].missionName}'),
-                            subtitle: Text('${data[index].details}'),
-                          ),
-                        );
-                      }),
-                );
-              } else if (snapshot.hasError) {
-                return Text("${snapshot.error}");
-              }
-
-              // By default, show a loading spinner.
-              return Center(child: CircularProgressIndicator());
-            }),
-        Text('Dragons'),
-        FutureBuilder<List<Dragons>>(
-            future: listDragons,
-            builder: (context, snapshot) {
-              if (snapshot.hasData) {
-                List<Dragons> data = snapshot.data;
-                return Container(
-                  padding:
-                      EdgeInsets.symmetric(horizontal: 16.0, vertical: 24.0),
-                  height: MediaQuery.of(context).size.height * 0.35,
-                  child: ListView.builder(
-                      shrinkWrap: true,
-                      scrollDirection: Axis.horizontal,
-                      itemCount: snapshot.data.length,
-                      itemBuilder: (context, index) {
-                        return Container(
-                          margin: EdgeInsets.all(8.0),
-                          color: Colors.yellow,
-                          width: MediaQuery.of(context).size.width * 0.6,
-                          child: ListTile(
-                            leading: Image.network(
-                              '${data[index].flickrImages[0]}',
-                              width: 60,
-                            ),
-                            title: Text('${data[index].name}'),
-                            subtitle: Text('${data[index].description}'),
-                          ),
-                        );
-                      }),
-                );
-              } else if (snapshot.hasError) {
-                return Text("${snapshot.error}");
-              }
-
-              // By default, show a loading spinner.
-              return Center(child: CircularProgressIndicator());
-            }),
-      ],
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
+    return SafeArea(
+        child: Scaffold(
       appBar: AppBar(
         title: Text('SpaceX'),
         actions: <Widget>[
@@ -181,6 +101,91 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ],
       ),
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Text('Launchers'),
+          FutureBuilder<List<Launches>>(
+              future: listLaunches,
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  List<Launches> data = snapshot.data;
+                  return Container(
+                    padding:
+                        EdgeInsets.symmetric(horizontal: 16.0, vertical: 24.0),
+                    height: MediaQuery.of(context).size.height * 0.35,
+                    child: ListView.builder(
+                        shrinkWrap: true,
+                        scrollDirection: Axis.horizontal,
+                        itemCount: 4,
+                        itemBuilder: (context, index) {
+                          return Container(
+                            margin: EdgeInsets.all(8.0),
+                            color: Colors.indigo,
+                            width: MediaQuery.of(context).size.width * 0.6,
+                            child: ListTile(
+                              leading: Image.network(
+                                '${data[index].links.missionPatch}',
+                                width: 60,
+                              ),
+                              title: Text('${data[index].missionName}'),
+                              subtitle: Text('${data[index].details}'),
+                            ),
+                          );
+                        }),
+                  );
+                } else if (snapshot.hasError) {
+                  return Text("${snapshot.error}");
+                }
+
+                // By default, show a loading spinner.
+                return Center(child: CircularProgressIndicator());
+              }),
+          Text('Dragons'),
+          FutureBuilder<List<Dragons>>(
+              future: listDragons,
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  List<Dragons> data = snapshot.data;
+                  return Container(
+                    padding:
+                        EdgeInsets.symmetric(horizontal: 16.0, vertical: 24.0),
+                    height: MediaQuery.of(context).size.height * 0.35,
+                    child: ListView.builder(
+                        shrinkWrap: true,
+                        scrollDirection: Axis.horizontal,
+                        itemCount: snapshot.data.length,
+                        itemBuilder: (context, index) {
+                          return Container(
+                            margin: EdgeInsets.all(8.0),
+                            color: Colors.yellow,
+                            width: MediaQuery.of(context).size.width * 0.6,
+                            child: ListTile(
+                              leading: Image.network(
+                                '${data[index].flickrImages[0]}',
+                                width: 60,
+                              ),
+                              title: Text('${data[index].name}'),
+                              subtitle: Text('${data[index].description}'),
+                            ),
+                          );
+                        }),
+                  );
+                } else if (snapshot.hasError) {
+                  return Text("${snapshot.error}");
+                }
+
+                // By default, show a loading spinner.
+                return Center(child: CircularProgressIndicator());
+              }),
+        ],
+      ),
+    ));
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
       body: _setScreen(),
       bottomNavigationBar: BottomNavyBar(
         items: [
@@ -193,12 +198,16 @@ class _HomeScreenState extends State<HomeScreen> {
             title: Text('Dragons'),
           ),
           BottomNavyBarItem(
+            icon: Icon(FontAwesomeIcons.home),
+            title: Text('Home'),
+          ),
+          BottomNavyBarItem(
             icon: Icon(FontAwesomeIcons.satellite),
             title: Text('Launches'),
           ),
           BottomNavyBarItem(
             icon: Icon(FontAwesomeIcons.meteor),
-            title: Text('Cores'),
+            title: Text('Others'),
           ),
         ],
         selectedIndex: _selectedIndex,

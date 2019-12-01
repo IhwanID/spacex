@@ -20,24 +20,28 @@ class _CoreScreenState extends State<CoreScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return DefaultTabController(
-      length: 2,
-      child: Scaffold(
-        appBar: TabBar(
-          indicatorColor: Colors.blue,
-          labelColor: Colors.blue,
-          unselectedLabelColor: Colors.blueAccent,
-          tabs: [
-            Tab(
-              text: 'Capsules',
+    return SafeArea(
+      child: DefaultTabController(
+        length: 2,
+        child: Scaffold(
+          appBar: AppBar(
+            title: Text('SpaceX App'),
+            bottom: TabBar(
+              labelColor: Colors.white,
+              unselectedLabelColor: Colors.white,
+              tabs: [
+                Tab(
+                  text: 'Capsules',
+                ),
+                Tab(
+                  text: 'Cores',
+                ),
+              ],
             ),
-            Tab(
-              text: 'Cores',
-            ),
-          ],
-        ),
-        body: TabBarView(
-          children: [buildCapsulesScreen(), buildCoreScreen()],
+          ),
+          body: TabBarView(
+            children: [buildCapsulesScreen(), buildCoreScreen()],
+          ),
         ),
       ),
     );
