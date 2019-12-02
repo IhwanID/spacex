@@ -18,7 +18,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   FirebaseMessaging _firebaseMessaging = new FirebaseMessaging();
-  int _selectedIndex = 0;
+  int _selectedIndex = 2;
 
   Future<List<Dragons>> listDragons;
   Future<List<Launches>> listLaunches;
@@ -104,32 +104,34 @@ class _HomeScreenState extends State<HomeScreen> {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Text('Launchers'),
+          Container(
+              margin: EdgeInsets.only(left: 16.0, top: 16.0),
+              child: Text('Launchers')),
           FutureBuilder<List<Launches>>(
               future: listLaunches,
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
                   List<Launches> data = snapshot.data;
                   return Container(
-                    padding:
-                        EdgeInsets.symmetric(horizontal: 16.0, vertical: 24.0),
-                    height: MediaQuery.of(context).size.height * 0.35,
+                    height: MediaQuery.of(context).size.height * 0.2,
                     child: ListView.builder(
+                        padding: EdgeInsets.symmetric(
+                            horizontal: 16.0, vertical: 24.0),
                         shrinkWrap: true,
                         scrollDirection: Axis.horizontal,
                         itemCount: 4,
                         itemBuilder: (context, index) {
-                          return Container(
-                            margin: EdgeInsets.all(8.0),
-                            color: Colors.indigo,
-                            width: MediaQuery.of(context).size.width * 0.6,
-                            child: ListTile(
-                              leading: Image.network(
-                                '${data[index].links.missionPatch}',
-                                width: 60,
+                          return Card(
+                            child: Container(
+                              margin: EdgeInsets.all(8.0),
+                              width: MediaQuery.of(context).size.width * 0.6,
+                              child: ListTile(
+                                leading: Image.network(
+                                  '${data[index].links.missionPatch}',
+                                  width: 60,
+                                ),
+                                title: Text('${data[index].missionName}'),
                               ),
-                              title: Text('${data[index].missionName}'),
-                              subtitle: Text('${data[index].details}'),
                             ),
                           );
                         }),
@@ -141,32 +143,34 @@ class _HomeScreenState extends State<HomeScreen> {
                 // By default, show a loading spinner.
                 return Center(child: CircularProgressIndicator());
               }),
-          Text('Dragons'),
+          Container(
+              margin: EdgeInsets.only(left: 16.0, top: 16.0),
+              child: Text('Dragons')),
           FutureBuilder<List<Dragons>>(
               future: listDragons,
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
                   List<Dragons> data = snapshot.data;
                   return Container(
-                    padding:
-                        EdgeInsets.symmetric(horizontal: 16.0, vertical: 24.0),
-                    height: MediaQuery.of(context).size.height * 0.35,
+                    height: MediaQuery.of(context).size.height * 0.2,
                     child: ListView.builder(
+                        padding: EdgeInsets.symmetric(
+                            horizontal: 16.0, vertical: 24.0),
                         shrinkWrap: true,
                         scrollDirection: Axis.horizontal,
                         itemCount: snapshot.data.length,
                         itemBuilder: (context, index) {
-                          return Container(
-                            margin: EdgeInsets.all(8.0),
-                            color: Colors.yellow,
-                            width: MediaQuery.of(context).size.width * 0.6,
-                            child: ListTile(
-                              leading: Image.network(
-                                '${data[index].flickrImages[0]}',
-                                width: 60,
+                          return Card(
+                            child: Container(
+                              margin: EdgeInsets.all(8.0),
+                              width: MediaQuery.of(context).size.width * 0.5,
+                              child: ListTile(
+                                leading: Image.network(
+                                  '${data[index].flickrImages[0]}',
+                                  width: 60,
+                                ),
+                                title: Text('${data[index].name}'),
                               ),
-                              title: Text('${data[index].name}'),
-                              subtitle: Text('${data[index].description}'),
                             ),
                           );
                         }),
