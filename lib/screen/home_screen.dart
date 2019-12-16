@@ -1,7 +1,6 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:spacex/api.dart';
 import 'package:spacex/model/dragons.dart';
 import 'package:spacex/model/launches.dart';
 import 'package:spacex/screen/cores_screen.dart';
@@ -21,7 +20,7 @@ class _HomeScreenState extends State<HomeScreen> {
   int _selectedIndex = 2;
 
   Future<DragonsList> listDragons;
-  Future<List<Launches>> listLaunches;
+  Future<LaunchesList> listLaunches;
 
   Future<dynamic> myBackgroundMessageHandler(Map<String, dynamic> message) {
     if (message.containsKey('data')) {
@@ -40,7 +39,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
-    listLaunches = fetchAllLaunches();
+    listLaunches = getAllLaunches();
     listDragons = getAllDragon();
 
     _firebaseMessaging.configure(
@@ -107,11 +106,11 @@ class _HomeScreenState extends State<HomeScreen> {
           Container(
               margin: EdgeInsets.only(left: 16.0, top: 16.0),
               child: Text('Launchers')),
-          FutureBuilder<List<Launches>>(
+          FutureBuilder<LaunchesList>(
               future: listLaunches,
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
-                  List<Launches> data = snapshot.data;
+                  List<Launches> data = snapshot.data.launches;
                   return Container(
                     height: MediaQuery.of(context).size.height * 0.2,
                     child: ListView.builder(
@@ -127,10 +126,10 @@ class _HomeScreenState extends State<HomeScreen> {
                               width: MediaQuery.of(context).size.width * 0.6,
                               child: ListTile(
                                 leading: Image.network(
-                                  '${data[index].links.missionPatch}',
+                                  '${data[index].links.patch}',
                                   width: 60,
                                 ),
-                                title: Text('${data[index].missionName}'),
+                                title: Text('${data[index].name}'),
                               ),
                             ),
                           );

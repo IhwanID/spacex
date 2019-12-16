@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:spacex/model/rockets.dart';
-import 'package:spacex/api.dart';
 import 'package:spacex/screen/webview_scree.dart';
 
 class RocketsScreen extends StatefulWidget {
@@ -9,41 +8,41 @@ class RocketsScreen extends StatefulWidget {
 }
 
 class _RocketsScreenState extends State<RocketsScreen> {
-  Future<List<Rockets>> listRockets;
+  Future<RocketsList> listRockets;
 
   @override
   void initState() {
     super.initState();
-    listRockets = fetchAllRockets();
+    listRockets = getAllRockets();
   }
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: FutureBuilder<List<Rockets>>(
+      child: FutureBuilder<RocketsList>(
           future: listRockets,
           builder: (context, snapshot) {
             if (snapshot.hasData) {
-              List<Rockets> data = snapshot.data;
+              List<Rockets> data = snapshot.data.rockets;
               return ListView.builder(
-                  itemCount: snapshot.data.length,
+                  itemCount: data.length,
                   itemBuilder: (context, index) {
                     return Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: ListTile(
                         leading: Image.network(
-                          '${data[index].flickrImages[0]}',
+                          '${data[index].images[0]}',
                           width: 60,
                         ),
-                        title: Text('${data[index].rocketName}'),
+                        title: Text('${data[index].name}'),
                         subtitle: Text('${data[index].description}'),
                         trailing: GestureDetector(
                             onTap: () {
                               Navigator.push(context,
                                   MaterialPageRoute(builder: (context) {
-                                    return WikipediaScreen(
-                                        url: '${data[index].wikipedia}');
-                                  }));
+                                return WikipediaScreen(
+                                    url: '${data[index].wikipedia}');
+                              }));
                             },
                             child: Icon(Icons.arrow_right)),
                       ),
@@ -57,8 +56,5 @@ class _RocketsScreenState extends State<RocketsScreen> {
             return Center(child: CircularProgressIndicator());
           }),
     );
-
   }
 }
-
-

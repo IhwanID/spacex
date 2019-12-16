@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:spacex/api.dart';
 import 'package:spacex/model/launches.dart';
 import 'package:spacex/screen/webview_scree.dart';
 
@@ -9,41 +8,41 @@ class LaunchesScreen extends StatefulWidget {
 }
 
 class _LaunchesScreenState extends State<LaunchesScreen> {
-  Future<List<Launches>> listLaunches;
+  Future<LaunchesList> listLaunches;
 
   @override
   void initState() {
     super.initState();
-    listLaunches = fetchAllLaunches();
+    listLaunches = getAllLaunches();
   }
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: FutureBuilder<List<Launches>>(
+      child: FutureBuilder<LaunchesList>(
           future: listLaunches,
           builder: (context, snapshot) {
             if (snapshot.hasData) {
-              List<Launches> data = snapshot.data;
+              List<Launches> data = snapshot.data.launches;
               return ListView.builder(
-                  itemCount: snapshot.data.length,
+                  itemCount: data.length,
                   itemBuilder: (context, index) {
                     return Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: ListTile(
                         leading: Image.network(
-                          '${data[index].links.missionPatch}',
+                          '${data[index].links.patch}',
                           width: 60,
                         ),
-                        title: Text('${data[index].missionName}'),
+                        title: Text('${data[index].name}'),
                         subtitle: Text('${data[index].details}'),
                         trailing: GestureDetector(
                             onTap: () {
                               Navigator.push(context,
                                   MaterialPageRoute(builder: (context) {
-                                    return WikipediaScreen(
-                                        url: '${data[index].links.wikipedia}');
-                                  }));
+                                return WikipediaScreen(
+                                    url: '${data[index].links.wikipedia}');
+                              }));
                             },
                             child: Icon(Icons.arrow_right)),
                       ),
@@ -57,6 +56,5 @@ class _LaunchesScreenState extends State<LaunchesScreen> {
             return Center(child: CircularProgressIndicator());
           }),
     );
-
   }
 }
