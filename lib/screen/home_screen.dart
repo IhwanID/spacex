@@ -20,7 +20,7 @@ class _HomeScreenState extends State<HomeScreen> {
   FirebaseMessaging _firebaseMessaging = new FirebaseMessaging();
   int _selectedIndex = 2;
 
-  Future<List<Dragons>> listDragons;
+  Future<DragonsList> listDragons;
   Future<List<Launches>> listLaunches;
 
   Future<dynamic> myBackgroundMessageHandler(Map<String, dynamic> message) {
@@ -41,7 +41,7 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
     listLaunches = fetchAllLaunches();
-    listDragons = fetchAllDragons();
+    listDragons = getAllDragon();
 
     _firebaseMessaging.configure(
       onMessage: (Map<String, dynamic> message) {
@@ -146,11 +146,11 @@ class _HomeScreenState extends State<HomeScreen> {
           Container(
               margin: EdgeInsets.only(left: 16.0, top: 16.0),
               child: Text('Dragons')),
-          FutureBuilder<List<Dragons>>(
+          FutureBuilder<DragonsList>(
               future: listDragons,
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
-                  List<Dragons> data = snapshot.data;
+                  List<Dragons> data = snapshot.data.dragons;
                   return Container(
                     height: MediaQuery.of(context).size.height * 0.2,
                     child: ListView.builder(
@@ -158,7 +158,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             horizontal: 16.0, vertical: 24.0),
                         shrinkWrap: true,
                         scrollDirection: Axis.horizontal,
-                        itemCount: snapshot.data.length,
+                        itemCount: snapshot.data.dragons.length,
                         itemBuilder: (context, index) {
                           return Card(
                             child: Container(
@@ -166,7 +166,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               width: MediaQuery.of(context).size.width * 0.5,
                               child: ListTile(
                                 leading: Image.network(
-                                  '${data[index].flickrImages[0]}',
+                                  '${data[index].images[0]}',
                                   width: 60,
                                 ),
                                 title: Text('${data[index].name}'),

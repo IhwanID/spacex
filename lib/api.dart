@@ -12,15 +12,6 @@ Future<List<Rockets>> fetchAllRockets() async {
   }
 }
 
-Future<List<Dragons>> fetchAllDragons() async {
-  final response = await http.get('https://api.spacexdata.com/v3/dragons');
-  if (response.statusCode == 200) {
-    return dragonsFromJson(response.body);
-  } else {
-    throw Exception('Failed to load post');
-  }
-}
-
 Future<List<Launches>> fetchAllLaunches() async {
   final response = await http.get('https://api.spacexdata.com/v3/launches');
   if (response.statusCode == 200) {
