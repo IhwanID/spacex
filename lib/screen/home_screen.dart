@@ -9,6 +9,9 @@ import 'package:spacex/screen/info_screen.dart';
 import 'package:spacex/screen/launches_scree.dart';
 import 'package:spacex/screen/rockets_screen.dart';
 import 'package:bottom_navy_bar/bottom_navy_bar.dart';
+import 'package:spacex/widget/item_card.dart';
+
+import 'launches_scree.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -24,7 +27,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Future<dynamic> myBackgroundMessageHandler(Map<String, dynamic> message) {
     if (message.containsKey('data')) {
-      // Handle data message
       final dynamic data = message['data'];
     }
 
@@ -32,8 +34,6 @@ class _HomeScreenState extends State<HomeScreen> {
       // Handle notification message
       final dynamic notification = message['notification'];
     }
-
-    // Or do other work.
   }
 
   @override
@@ -84,8 +84,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   buildHomeScreen() {
-    return SafeArea(
-        child: Scaffold(
+    return Scaffold(
       appBar: AppBar(
         title: Text('SpaceX'),
         actions: <Widget>[
@@ -104,8 +103,21 @@ class _HomeScreenState extends State<HomeScreen> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Container(
-              margin: EdgeInsets.only(left: 16.0, top: 16.0),
-              child: Text('Launchers')),
+              margin: EdgeInsets.only(left: 16.0, top: 16.0, right: 16.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Text('Launchers'),
+                  GestureDetector(
+                    child: Text('See All'),
+                    onTap: () {
+                      setState(() {
+                        _selectedIndex = 3;
+                      });
+                    },
+                  ),
+                ],
+              )),
           FutureBuilder<LaunchesList>(
               future: listLaunches,
               builder: (context, snapshot) {
@@ -120,18 +132,10 @@ class _HomeScreenState extends State<HomeScreen> {
                         scrollDirection: Axis.horizontal,
                         itemCount: 4,
                         itemBuilder: (context, index) {
-                          return Card(
-                            child: Container(
-                              margin: EdgeInsets.all(8.0),
-                              width: MediaQuery.of(context).size.width * 0.6,
-                              child: ListTile(
-                                leading: Image.network(
-                                  '${data[index].links.patch}',
-                                  width: 60,
-                                ),
-                                title: Text('${data[index].name}'),
-                              ),
-                            ),
+                          var item = data[index];
+                          return ItemCard(
+                            image: item.links.patch,
+                            name: item.name,
                           );
                         }),
                   );
@@ -143,8 +147,21 @@ class _HomeScreenState extends State<HomeScreen> {
                 return Center(child: CircularProgressIndicator());
               }),
           Container(
-              margin: EdgeInsets.only(left: 16.0, top: 16.0),
-              child: Text('Dragons')),
+              margin: EdgeInsets.only(left: 16.0, top: 16.0, right: 16.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Text('Dragons'),
+                  GestureDetector(
+                    child: Text('See All'),
+                    onTap: () {
+                      setState(() {
+                        _selectedIndex = 1;
+                      });
+                    },
+                  ),
+                ],
+              )),
           FutureBuilder<DragonsList>(
               future: listDragons,
               builder: (context, snapshot) {
@@ -159,18 +176,10 @@ class _HomeScreenState extends State<HomeScreen> {
                         scrollDirection: Axis.horizontal,
                         itemCount: snapshot.data.dragons.length,
                         itemBuilder: (context, index) {
-                          return Card(
-                            child: Container(
-                              margin: EdgeInsets.all(8.0),
-                              width: MediaQuery.of(context).size.width * 0.5,
-                              child: ListTile(
-                                leading: Image.network(
-                                  '${data[index].images[0]}',
-                                  width: 60,
-                                ),
-                                title: Text('${data[index].name}'),
-                              ),
-                            ),
+                          var item = data[index];
+                          return ItemCard(
+                            image: item.images[0],
+                            name: item.name,
                           );
                         }),
                   );
@@ -183,7 +192,7 @@ class _HomeScreenState extends State<HomeScreen> {
               }),
         ],
       ),
-    ));
+    );
   }
 
   @override
