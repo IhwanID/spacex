@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:spacex/model/rockets.dart';
-import 'package:spacex/screen/webview_scree.dart';
+import 'package:spacex/screen/webview_screen.dart';
+import 'package:spacex/utils/extension.dart';
 
 class RocketsScreen extends StatefulWidget {
   @override
@@ -27,15 +28,16 @@ class _RocketsScreenState extends State<RocketsScreen> {
               return ListView.builder(
                   itemCount: data.length,
                   itemBuilder: (context, index) {
+                    var item = data[index];
                     return Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: ListTile(
                         leading: Image.network(
-                          '${data[index].images[0]}',
+                          '${item.images[0]}',
                           width: 60,
                         ),
-                        title: Text('${data[index].name}'),
-                        subtitle: Text('${data[index].description}'),
+                        title: Text('${item.name}'),
+                        subtitle: Text('${item.description.startDesc()}'),
                         trailing: GestureDetector(
                             onTap: () {
                               Navigator.push(context,

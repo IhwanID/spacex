@@ -78,7 +78,6 @@ class _CoreScreenState extends State<CoreScreen> {
               return Text("${snapshot.error}");
             }
 
-            // By default, show a loading spinner.
             return Center(child: CircularProgressIndicator());
           }),
     );
@@ -115,7 +114,6 @@ class _CoreScreenState extends State<CoreScreen> {
               return Text("${snapshot.error}");
             }
 
-            // By default, show a loading spinner.
             return Center(child: CircularProgressIndicator());
           }),
     );

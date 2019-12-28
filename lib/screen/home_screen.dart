@@ -6,12 +6,12 @@ import 'package:spacex/model/launches.dart';
 import 'package:spacex/screen/cores_screen.dart';
 import 'package:spacex/screen/dragons_screen.dart';
 import 'package:spacex/screen/info_screen.dart';
-import 'package:spacex/screen/launches_scree.dart';
+import 'package:spacex/screen/launches_screen.dart';
 import 'package:spacex/screen/rockets_screen.dart';
 import 'package:bottom_navy_bar/bottom_navy_bar.dart';
 import 'package:spacex/widget/item_card.dart';
 
-import 'launches_scree.dart';
+import 'launches_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   @override

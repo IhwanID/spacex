@@ -14,13 +14,17 @@ class DetailScreen extends StatefulWidget {
 class _DetailScreenState extends State<DetailScreen> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Column(
-        children: <Widget>[
-          Image.network(widget.image),
-          Text(widget.name),
-          Text(widget.description)
-        ],
+    return SafeArea(
+      child: Scaffold(
+        body: Container(
+          child: Column(
+            children: <Widget>[
+              Image.network(widget.image),
+              Text(widget.name),
+              Text(widget.description)
+            ],
+          ),
+        ),
       ),
     );
   }

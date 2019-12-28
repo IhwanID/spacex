@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:spacex/model/dragons.dart';
-import 'package:spacex/screen/webview_scree.dart';
+import 'package:spacex/screen/webview_screen.dart';
 
 class DragonsScreen extends StatefulWidget {
   @override
@@ -52,7 +52,6 @@ class _DragonsScreenState extends State<DragonsScreen> {
               return Text("${snapshot.error}");
             }
 
-            // By default, show a loading spinner.
             return Center(child: CircularProgressIndicator());
           }),
     );
