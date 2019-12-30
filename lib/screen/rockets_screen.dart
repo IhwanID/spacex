@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:spacex/model/rockets.dart';
 import 'package:spacex/screen/webview_screen.dart';
+import 'package:spacex/service/api.dart';
 import 'package:spacex/utils/extension.dart';
 
 class RocketsScreen extends StatefulWidget {
@@ -14,7 +15,7 @@ class _RocketsScreenState extends State<RocketsScreen> {
   @override
   void initState() {
     super.initState();
-    listRockets = getAllRockets();
+    listRockets = Api().getAllRockets();
   }
 
   @override

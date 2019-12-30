@@ -1,6 +1,3 @@
-import 'dart:convert';
-import 'dart:io';
-import 'package:http/http.dart' as http;
 import 'package:json_annotation/json_annotation.dart';
 
 part 'ships.g.dart';
@@ -32,18 +29,4 @@ class Ships {
 
   factory Ships.fromJson(Map<String, dynamic> json) => _$ShipsFromJson(json);
   Map<String, dynamic> toJson() => _$ShipsToJson(this);
-}
-
-Future<ShipsList> getAllShips() async {
-  const spacexCoreUrl = 'https://api.spacexdata.com/v3/ships';
-
-  final response = await http.get(spacexCoreUrl);
-  if (response.statusCode == 200) {
-    return ShipsList.fromJson(json.decode(response.body));
-  } else {
-    throw HttpException(
-        'Unexpected status code ${response.statusCode}:'
-        ' ${response.reasonPhrase}',
-        uri: Uri.parse(spacexCoreUrl));
-  }
 }

@@ -9,6 +9,7 @@ import 'package:spacex/screen/info_screen.dart';
 import 'package:spacex/screen/launches_screen.dart';
 import 'package:spacex/screen/rockets_screen.dart';
 import 'package:bottom_navy_bar/bottom_navy_bar.dart';
+import 'package:spacex/service/api.dart';
 import 'package:spacex/widget/item_card.dart';
 
 import 'launches_screen.dart';
@@ -22,26 +23,16 @@ class _HomeScreenState extends State<HomeScreen> {
   FirebaseMessaging _firebaseMessaging = new FirebaseMessaging();
   int _selectedIndex = 2;
 
+  final Api api = new Api();
+
   Future<DragonsList> listDragons;
   Future<LaunchesList> listLaunches;
-
-  Future<dynamic> myBackgroundMessageHandler(Map<String, dynamic> message) {
-    if (message.containsKey('data')) {
-      final dynamic data = message['data'];
-    }
-
-    if (message.containsKey('notification')) {
-      // Handle notification message
-      final dynamic notification = message['notification'];
-    }
-  }
 
   @override
   void initState() {
     super.initState();
-    listLaunches = getAllLaunches();
-    listDragons = getAllDragon();
-
+    listLaunches = api.getAllLaunches();
+    listDragons = api.getAllDragon();
     _firebaseMessaging.configure(
       onMessage: (Map<String, dynamic> message) {
         print('on message $message');
@@ -124,18 +115,27 @@ class _HomeScreenState extends State<HomeScreen> {
                 if (snapshot.hasData) {
                   List<Launches> data = snapshot.data.launches;
                   return Container(
-                    height: MediaQuery.of(context).size.height * 0.2,
+                    width: MediaQuery.of(context).size.width,
+                    height: 150,
                     child: ListView.builder(
                         padding: EdgeInsets.symmetric(
-                            horizontal: 16.0, vertical: 24.0),
+                            horizontal: 8.0, vertical: 16.0),
                         shrinkWrap: true,
                         scrollDirection: Axis.horizontal,
                         itemCount: 4,
                         itemBuilder: (context, index) {
                           var item = data[index];
-                          return ItemCard(
-                            image: item.links.patch,
-                            name: item.name,
+                          return Container(
+                            height: 150,
+                            width: 150,
+                            decoration: BoxDecoration(
+                              color: Colors.blue,
+                              shape: BoxShape.circle,
+                              image: DecorationImage(
+                                fit: BoxFit.cover,
+                                image: NetworkImage(item.links.patch),
+                              ),
+                            ),
                           );
                         }),
                   );

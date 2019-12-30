@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:spacex/model/dragons.dart';
 import 'package:spacex/screen/webview_screen.dart';
+import 'package:spacex/service/api.dart';
 
 class DragonsScreen extends StatefulWidget {
   @override
@@ -13,7 +14,7 @@ class _DragonsScreenState extends State<DragonsScreen> {
   @override
   void initState() {
     super.initState();
-    listDragons = getAllDragon();
+    listDragons = Api().getAllDragon();
   }
 
   @override

@@ -1,6 +1,3 @@
-import 'dart:convert';
-import 'dart:io';
-import 'package:http/http.dart' as http;
 import 'package:json_annotation/json_annotation.dart';
 
 part 'capsules.g.dart';
@@ -51,18 +48,4 @@ class Missions {
   factory Missions.fromJson(Map<String, dynamic> json) =>
       _$MissionsFromJson(json);
   Map<String, dynamic> toJson() => _$MissionsToJson(this);
-}
-
-Future<CapsulesList> getAllCapsules() async {
-  const spacexCoreUrl = 'https://api.spacexdata.com/v3/capsules';
-
-  final response = await http.get(spacexCoreUrl);
-  if (response.statusCode == 200) {
-    return CapsulesList.fromJson(json.decode(response.body));
-  } else {
-    throw HttpException(
-        'Unexpected status code ${response.statusCode}:'
-        ' ${response.reasonPhrase}',
-        uri: Uri.parse(spacexCoreUrl));
-  }
 }

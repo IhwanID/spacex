@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:spacex/model/info.dart';
+import 'package:spacex/service/api.dart';
 
 class InfoScreen extends StatefulWidget {
   @override
@@ -11,7 +12,7 @@ class _InfoScreenState extends State<InfoScreen> {
   @override
   void initState() {
     super.initState();
-    info = getInfo();
+    info = Api().getInfo();
   }
 
   @override

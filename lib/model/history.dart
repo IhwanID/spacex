@@ -1,6 +1,3 @@
-import 'dart:convert';
-import 'dart:io';
-import 'package:http/http.dart' as http;
 import 'package:json_annotation/json_annotation.dart';
 
 part 'history.g.dart';
@@ -43,18 +40,4 @@ class Links {
 
   factory Links.fromJson(Map<String, dynamic> json) => _$LinksFromJson(json);
   Map<String, dynamic> toJson() => _$LinksToJson(this);
-}
-
-Future<HistoryList> getAllHistory() async {
-  const spacexCoreUrl = 'https://api.spacexdata.com/v3/history';
-
-  final response = await http.get(spacexCoreUrl);
-  if (response.statusCode == 200) {
-    return HistoryList.fromJson(json.decode(response.body));
-  } else {
-    throw HttpException(
-        'Unexpected status code ${response.statusCode}:'
-        ' ${response.reasonPhrase}',
-        uri: Uri.parse(spacexCoreUrl));
-  }
 }

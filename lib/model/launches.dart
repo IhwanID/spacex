@@ -1,6 +1,3 @@
-import 'dart:convert';
-import 'dart:io';
-import 'package:http/http.dart' as http;
 import 'package:json_annotation/json_annotation.dart';
 
 part 'launches.g.dart';
@@ -46,18 +43,4 @@ class Links {
 
   factory Links.fromJson(Map<String, dynamic> json) => _$LinksFromJson(json);
   Map<String, dynamic> toJson() => _$LinksToJson(this);
-}
-
-Future<LaunchesList> getAllLaunches() async {
-  const spacexCoreUrl = 'https://api.spacexdata.com/v3/launches';
-
-  final response = await http.get(spacexCoreUrl);
-  if (response.statusCode == 200) {
-    return LaunchesList.fromJson(json.decode(response.body));
-  } else {
-    throw HttpException(
-        'Unexpected status code ${response.statusCode}:'
-        ' ${response.reasonPhrase}',
-        uri: Uri.parse(spacexCoreUrl));
-  }
 }

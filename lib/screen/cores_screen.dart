@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:spacex/model/capsules.dart';
 import 'package:spacex/model/core.dart';
+import 'package:spacex/service/api.dart';
 
 class CoreScreen extends StatefulWidget {
   @override
@@ -10,12 +11,13 @@ class CoreScreen extends StatefulWidget {
 class _CoreScreenState extends State<CoreScreen> {
   Future<CoresList> coresList;
   Future<CapsulesList> capsulesList;
+  final Api api = new Api();
 
   @override
   void initState() {
     super.initState();
-    coresList = getAllCore();
-    capsulesList = getAllCapsules();
+    coresList = api.getAllCore();
+    capsulesList = api.getAllCapsules();
   }
 
   @override
