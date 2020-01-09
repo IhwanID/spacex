@@ -4,7 +4,7 @@ SpaceX App
 Api Provided by [SpaceX-API](https://github.com/r-spacex/SpaceX-API)
 
 Library used : 
-- (Dio)[https://pub.dev/packages/dio]
+- [Dio](https://pub.dev/packages/dio)
 - flutter_webview_plugin
 - json_serializable
 - bottom_navy_bar
