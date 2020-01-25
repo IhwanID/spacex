@@ -5,7 +5,7 @@
 Library used : 
 - [Dio](https://pub.dev/packages/dio) - A powerful Http client for Dart, which supports Interceptors, Global configuration, FormData, Request Cancellation, File downloading, Timeout etc.
 - [flutter_webview_plugin](https://pub.dev/packages/flutter_webview_plugin) - Plugin that allows Flutter to communicate with a native WebView.
-- json_serializable
+- [json_serializable](https://pub.dev/packages/json_serializable)
 - bottom_navy_bar
 - font_awesome_flutter
 
