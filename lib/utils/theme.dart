@@ -1,0 +1,36 @@
+import 'package:flutter/material.dart';
+
+enum MyTheme{
+  Light,
+  Dark
+}
+
+class ThemeNotifier extends ChangeNotifier{
+
+  static List<ThemeData> themes = [
+    ThemeData(
+      brightness: Brightness.light,
+      primarySwatch: Colors.blue,
+    ),
+    ThemeData(
+      brightness: Brightness.dark,
+      primarySwatch: Colors.blue,
+    ),
+  ];
+
+  MyTheme _current = MyTheme.Light;
+  ThemeData _currentTheme = themes[0];
+
+  set currentTheme(theme){
+    if(theme != null){
+      _current = theme;
+      _currentTheme = _current == MyTheme.Light ? themes[0] : themes[1];
+      notifyListeners();
+    }
+
+  }
+
+  get currentTheme => _current;
+
+  void switchTheme() => currentTheme == MyTheme.Light ? currentTheme = MyTheme.Dark : currentTheme = MyTheme.Light;
+}
