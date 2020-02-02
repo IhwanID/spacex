@@ -30,7 +30,9 @@ class ThemeNotifier extends ChangeNotifier{
 
   }
 
-  get currentTheme => _current;
+  get myTheme => _current;
 
-  void switchTheme() => currentTheme == MyTheme.Light ? currentTheme = MyTheme.Dark : currentTheme = MyTheme.Light;
+  get currentTheme => _currentTheme;
+
+  void switchTheme() => _current == MyTheme.Light ? currentTheme = MyTheme.Dark : currentTheme = MyTheme.Light;
 }

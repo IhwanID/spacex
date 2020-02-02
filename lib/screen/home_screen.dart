@@ -1,6 +1,7 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:provider/provider.dart';
 import 'package:spacex/model/dragons.dart';
 import 'package:spacex/model/launches.dart';
 import 'package:spacex/screen/cores_screen.dart';
@@ -10,6 +11,7 @@ import 'package:spacex/screen/launches_screen.dart';
 import 'package:spacex/screen/rockets_screen.dart';
 import 'package:bottom_navy_bar/bottom_navy_bar.dart';
 import 'package:spacex/service/api.dart';
+import 'package:spacex/utils/theme.dart';
 import 'package:spacex/widget/item_card.dart';
 
 import 'launches_screen.dart';
@@ -75,10 +77,12 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   buildHomeScreen() {
+    final theme = Provider.of<ThemeNotifier>(context);
     return Scaffold(
       appBar: AppBar(
         title: Text('SpaceX'),
         actions: <Widget>[
+          IconButton(icon: theme.myTheme == MyTheme.Light ? Icon(FontAwesomeIcons.solidSun) : Icon(FontAwesomeIcons.solidMoon), onPressed: () => theme.switchTheme()),
           IconButton(
             icon: Icon(FontAwesomeIcons.infoCircle),
             onPressed: () {
