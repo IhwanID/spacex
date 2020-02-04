@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:spacex/model/launches.dart';
-import 'package:spacex/screen/detail_screen.dart';
+import 'package:spacex/ui/detail_screen.dart';
 import 'package:spacex/service/api.dart';
 
 class LaunchesScreen extends StatefulWidget {

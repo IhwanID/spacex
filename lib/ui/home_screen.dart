@@ -4,16 +4,14 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:spacex/model/dragons.dart';
 import 'package:spacex/model/launches.dart';
-import 'package:spacex/screen/cores_screen.dart';
-import 'package:spacex/screen/dragons_screen.dart';
-import 'package:spacex/screen/info_screen.dart';
-import 'package:spacex/screen/launches_screen.dart';
-import 'package:spacex/screen/rockets_screen.dart';
+import 'package:spacex/model/rockets.dart';
+import 'package:spacex/ui/others_screen.dart';
+import 'package:spacex/ui/info_screen.dart';
+import 'package:spacex/ui/launches_screen.dart';
 import 'package:bottom_navy_bar/bottom_navy_bar.dart';
 import 'package:spacex/service/api.dart';
 import 'package:spacex/utils/theme.dart';
 import 'package:spacex/widget/item_card.dart';
-
 import 'launches_screen.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -23,18 +21,21 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   FirebaseMessaging _firebaseMessaging = new FirebaseMessaging();
-  int _selectedIndex = 2;
+  int _selectedIndex = 0;
 
   final Api api = new Api();
 
   Future<DragonsList> listDragons;
   Future<LaunchesList> listLaunches;
+  Future<RocketsList> rocketList;
 
   @override
   void initState() {
     super.initState();
     listLaunches = api.getAllLaunches();
     listDragons = api.getAllDragon();
+    rocketList = api.getAllRockets();
+
     _firebaseMessaging.configure(
       onMessage: (Map<String, dynamic> message) {
         print('on message $message');
@@ -64,11 +65,11 @@ class _HomeScreenState extends State<HomeScreen> {
 
   _setScreen() {
     if (_selectedIndex == 0) {
-      return RocketsScreen();
-    } else if (_selectedIndex == 1) {
-      return DragonsScreen();
-    } else if (_selectedIndex == 2) {
       return buildHomeScreen();
+    } else if (_selectedIndex == 1) {
+      return Center(child: Text('//TODO'));
+    } else if (_selectedIndex == 2) {
+      return Center(child: Text('//TODO'));
     } else if (_selectedIndex == 3) {
       return LaunchesScreen();
     } else {
@@ -97,6 +98,86 @@ class _HomeScreenState extends State<HomeScreen> {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
+          Container(
+              margin: EdgeInsets.only(left: 16.0, top: 16.0, right: 16.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: <Widget>[
+                  Text('Rockets'),
+                ],
+              )),
+          FutureBuilder<RocketsList>(
+              future: rocketList,
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  List<Rockets> data = snapshot.data.rockets;
+                  return Container(
+                    width: MediaQuery.of(context).size.width,
+                    height: 150,
+                    child: ListView.builder(
+                        padding: EdgeInsets.symmetric(
+                            horizontal: 8.0, vertical: 16.0),
+                        shrinkWrap: true,
+                        scrollDirection: Axis.horizontal,
+                        itemCount: data.length,
+                        itemBuilder: (context, index) {
+                          var item = data[index];
+                          return Container(
+                            height: 150,
+                            width: 150,
+                            decoration: BoxDecoration(
+                              color: Colors.blue,
+                              shape: BoxShape.circle,
+                              image: DecorationImage(
+                                fit: BoxFit.cover,
+                                image: NetworkImage(item.images[0]),
+                              ),
+                            ),
+                          );
+                        }),
+                  );
+                } else if (snapshot.hasError) {
+                  return Text("${snapshot.error}");
+                }
+                // By default, show a loading spinner.
+                return Center(child: CircularProgressIndicator());
+              }),
+          Container(
+              margin: EdgeInsets.only(left: 16.0, top: 16.0, right: 16.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Text('Dragons'),
+                ],
+              )),
+          FutureBuilder<DragonsList>(
+              future: listDragons,
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  List<Dragons> data = snapshot.data.dragons;
+                  return Container(
+                    height: MediaQuery.of(context).size.height * 0.2,
+                    child: ListView.builder(
+                        padding: EdgeInsets.symmetric(
+                            horizontal: 16.0, vertical: 24.0),
+                        shrinkWrap: true,
+                        scrollDirection: Axis.horizontal,
+                        itemCount: snapshot.data.dragons.length,
+                        itemBuilder: (context, index) {
+                          var item = data[index];
+                          return ItemCard(
+                            image: item.images[0],
+                            name: item.name,
+                          );
+                        }),
+                  );
+                } else if (snapshot.hasError) {
+                  return Text("${snapshot.error}");
+                }
+
+                // By default, show a loading spinner.
+                return Center(child: CircularProgressIndicator());
+              }),
           Container(
               margin: EdgeInsets.only(left: 16.0, top: 16.0, right: 16.0),
               child: Row(
@@ -150,50 +231,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 // By default, show a loading spinner.
                 return Center(child: CircularProgressIndicator());
               }),
-          Container(
-              margin: EdgeInsets.only(left: 16.0, top: 16.0, right: 16.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Text('Dragons'),
-                  GestureDetector(
-                    child: Text('See All'),
-                    onTap: () {
-                      setState(() {
-                        _selectedIndex = 1;
-                      });
-                    },
-                  ),
-                ],
-              )),
-          FutureBuilder<DragonsList>(
-              future: listDragons,
-              builder: (context, snapshot) {
-                if (snapshot.hasData) {
-                  List<Dragons> data = snapshot.data.dragons;
-                  return Container(
-                    height: MediaQuery.of(context).size.height * 0.2,
-                    child: ListView.builder(
-                        padding: EdgeInsets.symmetric(
-                            horizontal: 16.0, vertical: 24.0),
-                        shrinkWrap: true,
-                        scrollDirection: Axis.horizontal,
-                        itemCount: snapshot.data.dragons.length,
-                        itemBuilder: (context, index) {
-                          var item = data[index];
-                          return ItemCard(
-                            image: item.images[0],
-                            name: item.name,
-                          );
-                        }),
-                  );
-                } else if (snapshot.hasError) {
-                  return Text("${snapshot.error}");
-                }
 
-                // By default, show a loading spinner.
-                return Center(child: CircularProgressIndicator());
-              }),
         ],
       ),
     );
@@ -206,8 +244,8 @@ class _HomeScreenState extends State<HomeScreen> {
       bottomNavigationBar: BottomNavyBar(
         items: [
           BottomNavyBarItem(
-            icon: Icon(FontAwesomeIcons.rocket),
-            title: Text('Rockets'),
+            icon: Icon(FontAwesomeIcons.home),
+            title: Text('Home'),
           ),
           BottomNavyBarItem(
             icon: Icon(FontAwesomeIcons.spaceShuttle),

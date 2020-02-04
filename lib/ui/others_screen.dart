@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:spacex/model/capsules.dart';
 import 'package:spacex/model/core.dart';
+import 'package:spacex/model/landpads.dart';
 import 'package:spacex/service/api.dart';
 
 class CoreScreen extends StatefulWidget {
@@ -11,6 +12,7 @@ class CoreScreen extends StatefulWidget {
 class _CoreScreenState extends State<CoreScreen> {
   Future<CoresList> coresList;
   Future<CapsulesList> capsulesList;
+  Future<LandpadsList> lanpadsList;
   final Api api = new Api();
 
   @override
@@ -18,13 +20,14 @@ class _CoreScreenState extends State<CoreScreen> {
     super.initState();
     coresList = api.getAllCore();
     capsulesList = api.getAllCapsules();
+    lanpadsList = api.getAllLandpads();
   }
 
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: DefaultTabController(
-        length: 2,
+        length: 3,
         child: Scaffold(
           appBar: AppBar(
             title: Text('SpaceX App'),
@@ -38,11 +41,14 @@ class _CoreScreenState extends State<CoreScreen> {
                 Tab(
                   text: 'Cores',
                 ),
+                Tab(
+                  text: 'Lanpads',
+                ),
               ],
             ),
           ),
           body: TabBarView(
-            children: [buildCapsulesScreen(), buildCoreScreen()],
+            children: [buildCapsulesScreen(), buildCoreScreen(), buildLandpadsTab()],
           ),
         ),
       ),
@@ -106,6 +112,42 @@ class _CoreScreenState extends State<CoreScreen> {
                           ),
                           trailing: Text(
                             '${data.capsules[index].status}',
+                          ),
+                        ),
+                        Divider()
+                      ],
+                    );
+                  });
+            } else if (snapshot.hasError) {
+              return Text("${snapshot.error}");
+            }
+
+            return Center(child: CircularProgressIndicator());
+          }),
+    );
+  }
+
+  buildLandpadsTab(){
+    return Container(
+      child: FutureBuilder<LandpadsList>(
+          future: lanpadsList,
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              LandpadsList data = snapshot.data;
+              return ListView.builder(
+                  itemCount: data.landpads.length,
+                  itemBuilder: (context, index) {
+                    return Column(
+                      children: <Widget>[
+                        ListTile(
+                          title: Text(
+                            '${data.landpads[index].name}',
+                          ),
+                          subtitle: Text(
+                            '${data.landpads[index].details}', textAlign: TextAlign.justify,
+                          ),
+                          trailing: Text(
+                            '${data.landpads[index].status}',
                           ),
                         ),
                         Divider()

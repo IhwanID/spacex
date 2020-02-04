@@ -44,8 +44,8 @@ class Location {
   Location({this.name, this.region, this.longitude, this.latitude});
   final String name;
   final String region;
-  final int latitude;
-  final int longitude;
+  final double latitude;
+  final double longitude;
 
   factory Location.fromJson(Map<String, dynamic> json) =>
       _$LocationFromJson(json);

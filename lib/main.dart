@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:spacex/screen/home_screen.dart';
+import 'package:spacex/ui/home_screen.dart';
 import 'package:spacex/utils/theme.dart';
 
 void main() => runApp(MultiProvider(

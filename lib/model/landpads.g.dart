@@ -42,8 +42,8 @@ Location _$LocationFromJson(Map<String, dynamic> json) {
   return Location(
       name: json['name'] as String,
       region: json['region'] as String,
-      longitude: json['longitude'] as int,
-      latitude: json['latitude'] as int);
+      longitude: (json['longitude'] as num)?.toDouble(),
+      latitude: (json['latitude'] as num)?.toDouble());
 }
 
 Map<String, dynamic> _$LocationToJson(Location instance) => <String, dynamic>{

@@ -4,6 +4,7 @@ class ItemCard extends StatelessWidget {
   final String name;
   final String image;
   ItemCard({this.name, this.image});
+
   @override
   Widget build(BuildContext context) {
     return Card(
